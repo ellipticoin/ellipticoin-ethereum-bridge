@@ -1,0 +1,7 @@
+.env
+buidler.config.js
+**/buidler.config.js
+**/cache
+node_modules
+contracts/**/node_modules
+contracts/**/target
