@@ -48,6 +48,8 @@ async function main() {
 
   const ECCBToken = await ethers.getContractFactory("ECCBToken");
   const token = await ECCBToken.deploy(ROUTER_ADDRESS);
+  var { hash } = await token.mint(parseInt(AMOUNT) * 10000, address)
+  console.log(`Minted: ${AMOUNT} EC https://etherscan.io/tx/${hash}`)
   console.log("ECCBToken deployed to:", token.address);
 }
 
