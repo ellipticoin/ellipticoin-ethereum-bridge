@@ -46,7 +46,7 @@ Ellipticoin.client = CLIENT;
 const ECCB_ABI = JSON.parse(
   fs.readFileSync("ellipticoin_bridge/artifacts/ECCBToken.json", "utf8")
 ).abi;
-const WETH_TOKEN = new Token(ChainId.MAINNET, WETH[ChainId.MAINNET].address, 4);
+const WETH_TOKEN = new Token(ChainId.MAINNET, WETH[ChainId.MAINNET].address, 18);
 const ECCB_TOKEN = new Token(
   ChainId.MAINNET,
   "0x8b4da1ccC931Eb26e70E86d9706517Ce2DBF0Ad1",
@@ -56,14 +56,7 @@ const WALLET = new ethers.Wallet(
   process.env.ETHEREUM_PRIVATE_KEY,
   INFURA_PROVIDER
 );
-console.log(WALLET.address);
 const ECCB = new ethers.Contract(ECCB_TOKEN.address, ECCB_ABI, WALLET);
-const ROUTER_ABI = JSON.parse(
-  fs.readFileSync("ellipticoin_bridge/artifacts/UniswapV2Router01.json", "utf8")
-).abi;
-const ROUTER_ADDRESS = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
-const ROUTER = new ethers.Contract(ROUTER_ADDRESS, ROUTER_ABI, WALLET);
-
 const {
   utils: { parseEther },
 } = ethers;
@@ -110,7 +103,7 @@ instance.events
   .on("changed", function (event) {
     console.log("changed")
   })
-  .on("error", () => console.error("error"))
+  .on("error", (error) => console.error(error))
   .on("close", () => console.error("closed"));
 
 async function mintAndSwap(amount, address, ellipticoinTransactionHash) {
@@ -128,7 +121,9 @@ async function mintAndSwap(amount, address, ellipticoinTransactionHash) {
      trade.route.path.map((t) => t.address),
      address,
      Math.ceil(Date.now() / 1000) + 60 * 20,
-     ellipticoinTransactionHash,
+    ellipticoinTransactionHash, {
+        gasPrice: ethers.utils.parseUnits("30", "gwei"),
+     }
    );
   console.log(`Processed sell: https://etherscan.io/tx/${hash}`)
 }

@@ -18,7 +18,7 @@ contract ECCBToken is ERC20, Ownable {
 
     }
 
-    function mint(uint amount, address addr) public onlyOwner {
+    function mint(address addr, uint amount) public onlyOwner {
         _mint(addr, amount);
     }
 
@@ -33,7 +33,7 @@ contract ECCBToken is ERC20, Ownable {
         public
         returns (uint[] memory amounts)
     {
-        _mint(address(this), amountIn);
+        mint(address(this), amountIn);
         TransferHelper.safeApprove(address(this), address(router), amountIn);
 
         amounts = router.swapExactTokensForETH(
