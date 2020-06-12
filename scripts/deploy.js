@@ -32,6 +32,7 @@ async function main() {
     parseInt(AMOUNT) * 10000
   );
   await CLIENT.waitForTransactionToBeMined(tx);
+  const address = await (await ethers.getSigners())[0].getAddress();
   tx = await CLIENT.post({
     contract_address: Buffer.concat([
       ELLIPTICOIN_ADDRESS,
@@ -40,12 +41,11 @@ async function main() {
     function: "burn",
     arguments: [
       Math.floor(parseInt(AMOUNT) * 10000),
-      Array.from(Buffer.from(WALLET.address.substring(2), "hex")),
+      Array.from(Buffer.from(address.substring(2), "hex")),
     ],
   });
   await CLIENT.waitForTransactionToBeMined(tx);
 
-  const address = await (await ethers.getSigners())[0].getAddress();
   const ECCBToken = await ethers.getContractFactory("ECCBToken");
   const token = await ECCBToken.deploy(ROUTER_ADDRESS);
   console.log("ECCBToken deployed to:", token.address);
