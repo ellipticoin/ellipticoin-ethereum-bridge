@@ -8,9 +8,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract ECCBToken is ERC20, Ownable {
     event MintAndSwap(bytes32 ellipticoin_transaction_hash);
     event SwapAndBurn(bytes32 ellipticoin_address, uint256 amount);
-    IUniswapV2Router01 router;
+    IUniswapV2Router02 router;
 
-    constructor(IUniswapV2Router01 _router)
+    constructor(IUniswapV2Router02 _router)
         ERC20("Ellipitcoin Community Bridge Token", "ECCB")
       public {
         _setupDecimals(4);
