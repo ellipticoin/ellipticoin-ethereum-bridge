@@ -40,9 +40,7 @@ async function main() {
     function: "burn",
     arguments: [
       Math.floor(parseInt(AMOUNT) * 10000),
-      Array.from(
-        Buffer.from(WALLET.address.substring(2), "hex")
-      ),
+      Array.from(Buffer.from(WALLET.address.substring(2), "hex")),
     ],
   });
   await CLIENT.waitForTransactionToBeMined(tx);
@@ -50,7 +48,7 @@ async function main() {
   const address = await (await ethers.getSigners())[0].getAddress();
   const ECCBToken = await ethers.getContractFactory("ECCBToken");
   const token = await ECCBToken.deploy(ROUTER_ADDRESS);
-  console.log("ECCBToken deployed to:", token.address)
+  console.log("ECCBToken deployed to:", token.address);
 }
 
 main()

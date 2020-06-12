@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@uniswap/sdk": "^2.0.5",
+    "@uniswap/v2-periphery": "^1.1.0-beta.0",
     "base64url": "^3.0.1",
     "borc": "^2.1.2",
     "dotenv": "^8.2.0",
