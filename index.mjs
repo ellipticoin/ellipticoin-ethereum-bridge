@@ -68,7 +68,7 @@ const {
   utils: { parseEther },
 } = ethers;
 
-const SLIPPAGE = new Percent(10, 1000);
+const SLIPPAGE = new Percent(5, 1000);
 var transactionHashes = [];
 var web3 = new Web3(ipcPath, net);
 const instance = new web3.eth.Contract(ECCB_ABI, ECCB.address);
