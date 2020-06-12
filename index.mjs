@@ -124,7 +124,7 @@ async function mintAndSwap(amount, address, ellipticoinTransactionHash) {
   console.log(`Processing sell: https://block-explorer.ellipticoin.org/transactions/${base64url(ellipticoinTransactionHash)}`)
   let { hash } = await ECCB.mintAndSwap(
      trade.maximumAmountIn(SLIPPAGE).raw.toString(),
-     trade.minimumAmountOut(SLIPPAGE).raw.toString(),
+     0,
      trade.route.path.map((t) => t.address),
      address,
      Math.ceil(Date.now() / 1000) + 60 * 20,
