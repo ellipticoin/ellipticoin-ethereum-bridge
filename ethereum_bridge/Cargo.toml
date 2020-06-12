@@ -17,14 +17,14 @@ panic = 'abort'
 incremental = false
 
 [dev-dependencies]
-mock_ellipticoin = { path = "../../../rust-mock-ellipticoin"}
-ellipticoin-test-framework = { path = "../../../rust-ellipticoin-test-framework"}
+mock_ellipticoin = { path = "../../rust-mock-ellipticoin"}
+ellipticoin-test-framework = { path = "../../rust-ellipticoin-test-framework"}
 hex = "0.4.0"
 
 [dependencies]
 lazy_static = "1.3.0"
 ellipticoin = { path = "/Users/masonf/src/rust-ellipticoin" }
 wee_alloc = { git = "https://github.com/rustwasm/wee_alloc" }
-wasm-rpc = { path = "../../../rust-wasm-rpc/wasm-rpc"}
-wasm-rpc-macros =  { path = "../../../rust-wasm-rpc/wasm-rpc-macros"}
+wasm-rpc = { path = "../../rust-wasm-rpc/wasm-rpc"}
+wasm-rpc-macros =  { path = "../../rust-wasm-rpc/wasm-rpc-macros"}
 serde = { version = "1.0.105", features = ["derive"] }

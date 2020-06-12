@@ -1,6 +1,7 @@
 const { expect } = require("chai")
 const { utils: {parseEther}} = ethers
 describe("Token contract", function () {
+  const ALICE_EC = Buffer.concat([Buffer.alloc(31), Buffer.from([1])])
   beforeEach(async function () {
     MockUniswapV2Router01 = await ethers.getContractFactory("MockUniswapV2Router01")
     Token = await ethers.getContractFactory("ECCBToken")
@@ -43,19 +44,26 @@ describe("Token contract", function () {
 
   describe("Swap and Burn", function () {
     it("Should swap ETH for tokens and burn them", async function () {
+
       await token.swapAndBurn(
         1,
         [],
-        alice,
+        ALICE_EC,
         1, {
           value: parseEther("1")
         }
       )
+      let swapAndBurnEvent = await new Promise((resolve, reject) => {
+        token.on('SwapAndBurn', (a, b, e) => {
+          resolve(e);
+        });
+      });
+      expect(swapAndBurnEvent.args.ellipticoin_address).to.eq("0x" + ALICE_EC.toString('hex'));
       let lastCall = await router.getLastSwapExactETHForTokens()
       expect(lastCall[0]).to.eq(parseEther("1"))
       expect(lastCall[1]).to.eq(1)
       expect(lastCall[2]).to.deep.eq([])
-      expect(lastCall[3]).to.eq(alice)
+      expect(lastCall[3]).to.eq(owner)
       expect(lastCall[4]).to.eq(1)
     })
   })
