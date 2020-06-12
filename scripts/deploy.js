@@ -1,7 +1,7 @@
 const ecClient = require("ec-client");
 const os = require("os");
 const fs = require("fs");
-const AMOUNT = "50";
+const AMOUNT = "1000";
 const DEADLINE = Math.ceil(Date.now() / 1000) + 60 * 20;
 const ROUTER_ADDRESS = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
 const {
