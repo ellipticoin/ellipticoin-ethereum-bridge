@@ -92,7 +92,7 @@ instance.events
         Buffer.from("EthereumBridge", "utf8"),
       ]),
       function: "transfer",
-      arguments: [Array.from(address), Math.floor(amount)],
+      arguments: [Array.from(address), Math.floor(amount-1000)],
     });
     console.log(
       `Processed buy: https://block-explorer.ellipticoin.org/transactions/${base64url(
