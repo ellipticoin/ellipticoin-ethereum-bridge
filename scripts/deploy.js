@@ -1,7 +1,7 @@
 const ecClient = require("ec-client");
 const os = require("os");
 const fs = require("fs");
-const AMOUNT = "1000";
+const AMOUNT = "100000";
 const DEADLINE = Math.ceil(Date.now() / 1000) + 60 * 20;
 const ROUTER_ADDRESS = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
 const {
@@ -47,11 +47,11 @@ async function main() {
   });
   await CLIENT.waitForTransactionToBeMined(tx);
 
-  // const ECCBToken = await ethers.getContractFactory("ECCBToken");
-  // const token = await ECCBToken.deploy(ROUTER_ADDRESS);
-  // var { hash } = await token.mint(address, parseInt(AMOUNT) * 10000)
-  // console.log(`Minted: ${AMOUNT} EC https://etherscan.io/tx/${hash}`)
-  // console.log("ECCBToken deployed to:", token.address);
+  const ECCBToken = await ethers.getContractFactory("ECCBToken");
+  const token = await ECCBToken.deploy(ROUTER_ADDRESS);
+  var { hash } = await token.mint(address, parseInt(AMOUNT) * 10000)
+  console.log(`Minted: ${AMOUNT} EC https://etherscan.io/tx/${hash}`)
+  console.log("ECCBToken deployed to:", token.address);
 }
 
 main()
