@@ -42,7 +42,6 @@ const BRIDGE_CONTRACT_ADDRESS = Buffer.concat([
 const { Ellipticoin, transactionHash } = ecClient;
 const ECClient = ecClient.Client;
 const CLIENT = ECClient.fromConfig(`${os.homedir()}/.ec-wallet/config.yaml`);
-CLIENT.bootnodes = ["http://localhost:8080"]
 Ellipticoin.client = CLIENT;
 const ECCB_ABI = JSON.parse(
   fs.readFileSync("ellipticoin_bridge/artifacts/ECCBToken.json", "utf8")
