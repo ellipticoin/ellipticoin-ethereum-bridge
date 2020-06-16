@@ -36,11 +36,11 @@ mod ethereum_bridge {
         .unwrap()
     }
 
-    pub fn transfer(to: Vec<u8>, amount: u64) -> Result<Value, String> {
+    pub fn transfer(to: Vec<u8>, amount: u64) -> Result<(), String> {
         if !is_owner() {
             return Err("Not contract owner".to_string());
         };
-        value::from_value(call(
+        call::<Value>(
             SYSTEM_CONTRACT_ADDRESS.to_vec(),
             "transfer",
             vec![
@@ -48,8 +48,8 @@ mod ethereum_bridge {
                 amount.into(),
             ]
             .into(),
-        ))
-        .unwrap()
+        );
+        Ok(())
     }
 
     fn is_owner() -> bool {
