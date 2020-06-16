@@ -44,7 +44,10 @@ mod ethereum_bridge {
             SYSTEM_CONTRACT_ADDRESS.to_vec(),
             "transfer",
             vec![
-                to_value(to).unwrap(),
+                to.into_iter()
+                    .map(|n| n.into())
+                    .collect::<Vec<Value>>()
+                    .into(),
                 amount.into(),
             ]
             .into(),
@@ -122,23 +125,15 @@ mod tests {
         let contract_address = [ALICE.to_vec(), "EthereumBridge".as_bytes().to_vec()].concat();
         set_contract_address(contract_address.clone());
         set_sender(ALICE.to_vec());
-        set_mock_call(
-            SYSTEM_CONTRACT_ADDRESS.to_vec(),
-            "transfer",
-            &|arguments| {
-                let contract_address =
-                    [ALICE.to_vec(), "EthereumBridge".as_bytes().to_vec()].concat();
-                assert_eq!(
-                    arguments.get(0).unwrap().clone(),
-                    to_value(BOB.to_vec()).unwrap()
-                );
-                assert_eq!(
-                    arguments.get(1).unwrap().clone(),
-                    to_value(100).unwrap()
-                );
-                value::to_value::<Result<Value, &str>>(Ok(Value::Null)).unwrap()
-            },
-        );
+        set_mock_call(SYSTEM_CONTRACT_ADDRESS.to_vec(), "transfer", &|arguments| {
+            let contract_address = [ALICE.to_vec(), "EthereumBridge".as_bytes().to_vec()].concat();
+            assert_eq!(
+                arguments.get(0).unwrap().clone(),
+                to_value(BOB.to_vec()).unwrap()
+            );
+            assert_eq!(arguments.get(1).unwrap().clone(), to_value(100).unwrap());
+            value::to_value::<Result<Value, &str>>(Ok(Value::Null)).unwrap()
+        });
         transfer(BOB.to_vec(), 100).unwrap();
     }
 }
