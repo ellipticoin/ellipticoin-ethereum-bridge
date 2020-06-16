@@ -10,6 +10,7 @@ const {
 const { Ellipticoin, Contract, transactionHash, Client } = ecClient;
 const ECClient = ecClient.Client;
 const CLIENT = ECClient.fromConfig(`${os.homedir()}/.ec-wallet/config.yaml`);
+CLIENT.bootnodes = ["http://localhost:8080"]
 Ellipticoin.client = CLIENT;
 const ELLIPTICOIN_ADDRESS = Buffer.from(
   "vQMn3JvS3ATITteQ-gOYfuVSn2buuAH-4e8NY_CvtwA",
@@ -46,11 +47,11 @@ async function main() {
   });
   await CLIENT.waitForTransactionToBeMined(tx);
 
-  const ECCBToken = await ethers.getContractFactory("ECCBToken");
-  const token = await ECCBToken.deploy(ROUTER_ADDRESS);
-  var { hash } = await token.mint(address, parseInt(AMOUNT) * 10000)
-  console.log(`Minted: ${AMOUNT} EC https://etherscan.io/tx/${hash}`)
-  console.log("ECCBToken deployed to:", token.address);
+  // const ECCBToken = await ethers.getContractFactory("ECCBToken");
+  // const token = await ECCBToken.deploy(ROUTER_ADDRESS);
+  // var { hash } = await token.mint(address, parseInt(AMOUNT) * 10000)
+  // console.log(`Minted: ${AMOUNT} EC https://etherscan.io/tx/${hash}`)
+  // console.log("ECCBToken deployed to:", token.address);
 }
 
 main()

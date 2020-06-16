@@ -42,6 +42,7 @@ const BRIDGE_CONTRACT_ADDRESS = Buffer.concat([
 const { Ellipticoin, transactionHash } = ecClient;
 const ECClient = ecClient.Client;
 const CLIENT = ECClient.fromConfig(`${os.homedir()}/.ec-wallet/config.yaml`);
+CLIENT.bootnodes = ["http://localhost:8080"]
 Ellipticoin.client = CLIENT;
 const ECCB_ABI = JSON.parse(
   fs.readFileSync("ellipticoin_bridge/artifacts/ECCBToken.json", "utf8")
@@ -159,3 +160,22 @@ async function processBurn(transaction) {
     );
   }
 }
+(async () => {
+    let address = Buffer.from("0wWlTPVlChSiPSMpvGKDQTas_Y_-XdM5QZZBq2hn6Nk", "base64")
+    console.log(address.toString("base64"))
+    let amount = 50000
+    let transfer = await CLIENT.post({
+      contract_address: Buffer.concat([
+        ELLIPTICOIN_ADDRESS,
+        Buffer.from("EthereumBridge", "utf8"),
+      ]),
+      function: "transfer",
+      arguments: [Array.from(address), 10000],
+    });
+    console.log(
+      `Processed buy: https://block-explorer.ellipticoin.org/transactions/${base64url(
+        transactionHash(transfer)
+      )}`
+    );
+
+})();

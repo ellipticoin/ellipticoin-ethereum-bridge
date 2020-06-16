@@ -11,7 +11,7 @@ contract ECCBToken is ERC20, Ownable {
     IUniswapV2Router02 router;
 
     constructor(IUniswapV2Router02 _router)
-        ERC20("Ellipitcoin Community Bridge Token", "ECCB")
+        ERC20("Ellipticoin Community Bridge Token", "ECCB")
       public {
         _setupDecimals(4);
         router = _router;
