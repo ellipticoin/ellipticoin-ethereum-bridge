@@ -49,7 +49,7 @@ const ECCB_ABI = JSON.parse(
 const WETH_TOKEN = new Token(ChainId.MAINNET, WETH[ChainId.MAINNET].address, 18);
 const ECCB_TOKEN = new Token(
   ChainId.MAINNET,
-  "0x8b4da1ccC931Eb26e70E86d9706517Ce2DBF0Ad1",
+  "0x60DA34eE5C163d5416B72Df3561A662155b60752",
   4
 );
 const WALLET = new ethers.Wallet(
@@ -159,22 +159,3 @@ async function processBurn(transaction) {
     );
   }
 }
-(async () => {
-    let address = Buffer.from("0wWlTPVlChSiPSMpvGKDQTas_Y_-XdM5QZZBq2hn6Nk", "base64")
-    console.log(address.toString("base64"))
-    let amount = 50000
-    let transfer = await CLIENT.post({
-      contract_address: Buffer.concat([
-        ELLIPTICOIN_ADDRESS,
-        Buffer.from("EthereumBridge", "utf8"),
-      ]),
-      function: "transfer",
-      arguments: [Array.from(address), 10000],
-    });
-    console.log(
-      `Processed buy: https://block-explorer.ellipticoin.org/transactions/${base64url(
-        transactionHash(transfer)
-      )}`
-    );
-
-})();
