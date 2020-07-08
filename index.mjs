@@ -16,15 +16,20 @@ const {
   ChainId,
   Token,
   TokenAmount,
+  Fetcher,
   Pair,
   TradeType,
   Route,
   Trade,
   Percent,
 } = uniswapSDK;
+const CHAIN_ID = ChainId.GÖRLI;
 const WebSocketClient = websocket.w3cwebsocket;
 dotenv.config();
-let ipcPath = process.env["HOME"] + "/.local/share/openethereum/jsonrpc.ipc";
+const ipcPath = process.env["HOME"] + "/.local/share/openethereum/jsonrpc.ipc";
+// const ipcPath =
+//   process.env["HOME"] +
+//   "/Library/Application Support/io.parity.ethereum/jsonrpc.ipc";
 const IPC_PROVIDER = new ethers.providers.IpcProvider(ipcPath);
 const INFURA_PROVIDER = new ethers.providers.InfuraProvider(
   process.env.INFURA_NETWORK,
@@ -46,10 +51,10 @@ Ellipticoin.client = CLIENT;
 const ECCB_ABI = JSON.parse(
   fs.readFileSync("ellipticoin_bridge/artifacts/ECCBToken.json", "utf8")
 ).abi;
-const WETH_TOKEN = new Token(ChainId.MAINNET, WETH[ChainId.MAINNET].address, 18);
+const WETH_TOKEN = WETH[CHAIN_ID];
 const ECCB_TOKEN = new Token(
-  ChainId.MAINNET,
-  "0x60DA34eE5C163d5416B72Df3561A662155b60752",
+  CHAIN_ID,
+  "0x2e524faf0ed4880b42c971345605f2623daf469f",
   4
 );
 const WALLET = new ethers.Wallet(
@@ -62,6 +67,7 @@ const {
 } = ethers;
 
 const SLIPPAGE = new Percent(5, 1000);
+const TRANSACTION_FEE = 100;
 var transactionHashes = [];
 var web3 = new Web3(ipcPath, net);
 const instance = new web3.eth.Contract(ECCB_ABI, ECCB.address);
@@ -85,14 +91,14 @@ instance.events
       );
       return;
     }
-    transactionHashes.push(transactionHashes);
+    transactionHashes.push(event.transactionHash);
     let transfer = await CLIENT.post({
       contract_address: Buffer.concat([
         ELLIPTICOIN_ADDRESS,
         Buffer.from("EthereumBridge", "utf8"),
       ]),
       function: "transfer",
-      arguments: [Array.from(address), Math.floor(amount-1000)],
+      arguments: [Array.from(address), Math.floor(amount - TRANSACTION_FEE)],
     });
     console.log(
       `Processed buy: https://block-explorer.ellipticoin.org/transactions/${base64url(
@@ -101,34 +107,40 @@ instance.events
     );
   })
   .on("changed", function (event) {
-    console.log("changed")
+    console.log("changed");
   })
   .on("error", (error) => console.error(error))
   .on("close", () => console.error("closed"));
 
 async function mintAndSwap(amount, address, ellipticoinTransactionHash) {
-  let pair = await Pair.fetchData(WETH_TOKEN, ECCB_TOKEN);
+  let pair = await Fetcher.fetchPairData(WETH_TOKEN, ECCB_TOKEN);
   let route = new Route([pair], ECCB_TOKEN);
   const trade = new Trade(
     route,
     new TokenAmount(ECCB_TOKEN, amount),
     TradeType.EXACT_INPUT
   );
-  console.log(`Processing sell: https://block-explorer.ellipticoin.org/transactions/${base64url(ellipticoinTransactionHash)}`)
-  let { hash } = await ECCB.mintAndSwap(
-     trade.maximumAmountIn(SLIPPAGE).raw.toString(),
-     0,
-     trade.route.path.map((t) => t.address),
-     address,
-     Math.ceil(Date.now() / 1000) + 60 * 20,
-    ellipticoinTransactionHash, {
-        gasPrice: ethers.utils.parseUnits("30", "gwei"),
-     }
-   );
-  console.log(`Processed sell: https://etherscan.io/tx/${hash}`)
+  console.log(
+    `Processing sell: https://block-explorer.ellipticoin.org/transactions/${base64url(
+      ellipticoinTransactionHash
+    )}`
+  );
+  const { hash } = await ECCB.mintAndSwap(
+    trade.maximumAmountIn(SLIPPAGE).raw.toString(),
+    0,
+    trade.route.path.map((t) => t.address),
+    address,
+    Math.ceil(Date.now() / 1000) + 60 * 20,
+    ellipticoinTransactionHash,
+    {
+      gasPrice: ethers.utils.parseUnits("30", "gwei"),
+    }
+  );
+  console.log(`Processed sell: https://etherscan.io/tx/${hash}`);
 }
 
 var client = new WebSocketClient("wss://davenport.ellipticoin.org/websocket");
+// var client = new WebSocketClient("ws://localhost:8081/websocket");
 setInterval(() => client.send(new ArrayBuffer(0)), 30000);
 client.onmessage = ({ data }) => processBlock(decodeBytes(data));
 const decodeBytes = (bytes) => cbor.decode(Buffer.from(bytes));

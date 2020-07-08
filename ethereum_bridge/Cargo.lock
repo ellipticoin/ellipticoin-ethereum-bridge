@@ -80,65 +80,35 @@ name = "ellipticoin"
 version = "0.0.2"
 dependencies = [
  "lazy_static",
- "wasm-rpc 0.2.13",
- "wasm-rpc-macros 0.2.13",
-]
-
-[[package]]
-name = "ellipticoin"
-version = "0.1.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ff7a5cbf7f6c564d00a4bda4623fafcc62beeaee600eee0adb588781d64c7ea2"
-dependencies = [
- "ellipticoin-api",
- "ellipticoin-mock-api",
-]
-
-[[package]]
-name = "ellipticoin-api"
-version = "0.0.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f40da65cc96db7c3140500bc7dc93ac13d8733920425a6a9d1f28d42b4b89930"
-dependencies = [
- "wasm-rpc 0.2.14",
- "wasm-rpc-macros 0.2.14",
-]
-
-[[package]]
-name = "ellipticoin-mock-api"
-version = "0.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "53a42a7899bf2122e9cd5d1b2f5688ee9642cd9993b10bf8b3741f8f2ac803e7"
-dependencies = [
- "wasm-rpc 0.2.14",
- "wasm-rpc-macros 0.2.14",
+ "wasm-rpc",
+ "wasm-rpc-macros",
 ]
 
 [[package]]
 name = "ellipticoin-test-framework"
 version = "0.1.3"
 dependencies = [
- "ellipticoin 0.1.6",
+ "ellipticoin",
  "hex 0.3.2",
  "lazy_static",
  "rand",
  "secp256k1",
  "sha2",
- "wasm-rpc 0.2.14",
+ "wasm-rpc",
 ]
 
 [[package]]
 name = "ethereum_bridge"
 version = "0.1.0"
 dependencies = [
- "ellipticoin 0.0.2",
+ "ellipticoin",
  "ellipticoin-test-framework",
  "hex 0.4.2",
  "lazy_static",
  "mock_ellipticoin",
  "serde",
- "wasm-rpc 0.2.13",
- "wasm-rpc-macros 0.2.13",
+ "wasm-rpc",
+ "wasm-rpc-macros",
  "wee_alloc 0.4.5 (git+https://github.com/rustwasm/wee_alloc)",
 ]
 
@@ -203,9 +173,9 @@ checksum = "8452105ba047068f40ff7093dd1d9da90898e63dd61736462e9cdda6a90ad3c3"
 name = "mock_ellipticoin"
 version = "0.1.3"
 dependencies = [
- "ellipticoin 0.0.2",
- "wasm-rpc 0.2.13",
- "wasm-rpc-macros 0.2.13",
+ "ellipticoin",
+ "wasm-rpc",
+ "wasm-rpc-macros",
 ]
 
 [[package]]
@@ -225,9 +195,9 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.12"
+version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8872cf6f48eee44265156c111456a700ab3483686b3f96df4cf5481c89157319"
+checksum = "beae6331a816b1f65d04c45b078fd8e6c93e8071771f41b8163255bbd8d7c8fa"
 dependencies = [
  "unicode-xid 0.2.0",
 ]
@@ -247,7 +217,7 @@ version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4c1f4b0efa5fc5e8ceb705136bfee52cfdb6a4e3509f770b478cd6ed434232a7"
 dependencies = [
- "proc-macro2 1.0.12",
+ "proc-macro2 1.0.18",
 ]
 
 [[package]]
@@ -386,9 +356,9 @@ dependencies = [
 
 [[package]]
 name = "serde"
-version = "1.0.110"
+version = "1.0.114"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "99e7b308464d16b56eba9964e4972a3eee817760ab60d88c3f86e1fecb08204c"
+checksum = "5317f7588f0a5078ee60ef675ef96735a1442132dc645eb1d12c018620ed8cd3"
 dependencies = [
  "serde_derive",
 ]
@@ -404,17 +374,6 @@ dependencies = [
 
 [[package]]
 name = "serde_cbor"
-version = "0.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "45cd6d95391b16cd57e88b68be41d504183b7faae22030c0cc3b3f73dd57b2fd"
-dependencies = [
- "byteorder",
- "half",
- "serde",
-]
-
-[[package]]
-name = "serde_cbor"
 version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e18acfa2f90e8b735b2836ab8d538de304cbb6729a7360729ea5a895d15a622"
@@ -425,13 +384,13 @@ dependencies = [
 
 [[package]]
 name = "serde_derive"
-version = "1.0.110"
+version = "1.0.114"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "818fbf6bfa9a42d3bfcaca148547aa00c7b915bec71d1757aa2d44ca68771984"
+checksum = "2a0be94b04690fbaed37cddffc5c134bf537c8e3329d53e982fe04c374978f8e"
 dependencies = [
- "proc-macro2 1.0.12",
+ "proc-macro2 1.0.18",
  "quote 1.0.4",
- "syn 1.0.19",
+ "syn 1.0.33",
 ]
 
 [[package]]
@@ -459,11 +418,11 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "1.0.19"
+version = "1.0.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e8e5aa70697bb26ee62214ae3288465ecec0000f05182f039b477001f08f5ae7"
+checksum = "e8d5d96e8cbb005d6959f119f773bfaebb5684296108fb32600c00cde305b2cd"
 dependencies = [
- "proc-macro2 1.0.12",
+ "proc-macro2 1.0.18",
  "quote 1.0.4",
  "unicode-xid 0.2.0",
 ]
@@ -493,34 +452,13 @@ dependencies = [
  "hex 0.4.2",
  "serde",
  "serde_bytes",
- "serde_cbor 0.11.1",
- "wee_alloc 0.4.5 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
-name = "wasm-rpc"
-version = "0.2.14"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d0b07b477bce82284be749c0bdba0aef6f442074e8dfd5ce3676a2109255e24a"
-dependencies = [
- "serde_cbor 0.9.0",
+ "serde_cbor",
  "wee_alloc 0.4.5 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "wasm-rpc-macros"
 version = "0.2.13"
-dependencies = [
- "proc-macro2 0.4.30",
- "quote 0.6.13",
- "syn 0.15.44",
-]
-
-[[package]]
-name = "wasm-rpc-macros"
-version = "0.2.14"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "01696d996267e32b51a6c0228923734a4465f0d46a55635225d683d6c5cdd9b0"
 dependencies = [
  "proc-macro2 0.4.30",
  "quote 0.6.13",

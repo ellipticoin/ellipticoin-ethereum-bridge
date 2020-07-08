@@ -9,7 +9,7 @@ mod ethereum_bridge {
     pub fn constructor() {}
 
     pub fn burn(amount: u64, _ethereum_address: Vec<u8>) -> Result<Value, String> {
-        value::from_value(call(
+	call::<wasm_rpc::Value>(
             SYSTEM_CONTRACT_ADDRESS.to_vec(),
             "transfer_from",
             vec![
@@ -18,8 +18,8 @@ mod ethereum_bridge {
                 amount.into(),
             ]
             .into(),
-        ))
-        .unwrap()
+        );
+	Ok(Value::Null)
     }
 
     pub fn burn_and_swap(amount: u64, _ethereum_address: Vec<u8>) -> Result<Value, String> {
